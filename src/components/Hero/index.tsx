@@ -39,7 +39,7 @@ const Hero = ({ game }: Props) => {
               <>Por {formataPreco(game.prices.current)}</>
             )}
           </p>
-          {game.prices.discount && (
+          {game.prices.current && (
             <Button
               type="button"
               title="Clique aqui para adicionar este jogo ao carrinho."
