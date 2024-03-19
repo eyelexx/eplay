@@ -22,7 +22,7 @@ const Checkout = () => {
       cardOwner: '',
       cpfCardOwner: '',
       cardDisplayName: '',
-      cardnumber: '',
+      cardNumber: '',
       expiresMonth: '',
       expiresYear: '',
       cardCode: '',
@@ -43,39 +43,46 @@ const Checkout = () => {
         .email('E-mail inválido')
         .required('O campo é obrigatório'),
       confirmDeliveryEmail: Yup.string()
-        .email('E-mail inválido')
-        .required('O campo é obrigatório'),
-      cardOwner: Yup.string()
-        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
-        .required('O campo é obrigatório'),
-      cpfCardOwner: Yup.string()
-        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
-        .required('O campo é obrigatório'),
-      cardDisplayName: Yup.string()
-        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
-        .required('O campo é obrigatório'),
-      cardNumber: Yup.string()
-        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
-        .required('O campo é obrigatório'),
-      expiresMonth: Yup.string()
-        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
-        .required('O campo é obrigatório'),
-      expiresYear: Yup.string()
-        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
-        .required('O campo é obrigatório'),
-      cardCode: Yup.string()
-        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
-        .required('O campo é obrigatório'),
-      installments: Yup.string()
-        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
-        .required('O campo é obrigatório')
+        .oneOf([Yup.ref('deliveryEmail')], 'Os e-mails são diferentes')
+        .required('o campo é obrigatório'),
+
+      cardOwner: Yup.string().when((values, schema) =>
+        payWithCard ? schema.required('O campo é obrigatório') : schema
+      ),
+      cpfCardOwner: Yup.string().when((values, schema) =>
+        payWithCard ? schema.required('O campo é obrigatório') : schema
+      ),
+      cardDisplayName: Yup.string().when((values, schema) =>
+        payWithCard ? schema.required('O campo é obrigatório') : schema
+      ),
+      cardNumber: Yup.string().when((values, schema) =>
+        payWithCard ? schema.required('O campo é obrigatório') : schema
+      ),
+      expiresMonth: Yup.string().when((values, schema) =>
+        payWithCard ? schema.required('O campo é obrigatório') : schema
+      ),
+      expiresYear: Yup.string().when((values, schema) =>
+        payWithCard ? schema.required('O campo é obrigatório') : schema
+      ),
+      cardCode: Yup.string().when((values, schema) =>
+        payWithCard ? schema.required('O campo é obrigatório') : schema
+      ),
+      installments: Yup.string().when((values, schema) =>
+        payWithCard ? schema.required('O campo é obrigatório') : schema
+      )
     }),
     onSubmit: (values) => {
       console.log(values)
     }
   })
 
-  console.log(form)
+  const getErrorMessage = (fieldName: string, message?: string) => {
+    const isTouched = fieldName in form.touched
+    const isInvalid = fieldName in form.errors
+
+    if (isTouched && isInvalid) return message
+    return ''
+  }
 
   return (
     <form onSubmit={form.handleSubmit} className="container">
@@ -92,6 +99,7 @@ const Checkout = () => {
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
               />
+              <small>{getErrorMessage('fullName', form.errors.fullName)}</small>
             </InputGroup>
             <InputGroup>
               <label>Email</label>
@@ -102,6 +110,7 @@ const Checkout = () => {
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
               />
+              <small>{getErrorMessage('email', form.errors.email)}</small>
             </InputGroup>
             <InputGroup>
               <label htmlFor="cpf">CPF</label>
@@ -114,6 +123,7 @@ const Checkout = () => {
                 onBlur={form.handleBlur}
               />
             </InputGroup>
+            <small>{getErrorMessage('cpf', form.errors.cpf)}</small>
           </Row>
           <h3 className="margin-top">Dados de entrega - conteúdo digital</h3>
           <Row>
@@ -127,6 +137,9 @@ const Checkout = () => {
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
               />
+              <small>
+                {getErrorMessage('deliveryEmail', form.errors.deliveryEmail)}
+              </small>
             </InputGroup>
             <InputGroup>
               <label htmlFor="confirmDeliveryEmail">Confirme o email</label>
@@ -138,6 +151,12 @@ const Checkout = () => {
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
               />
+              <small>
+                {getErrorMessage(
+                  'confirmDeliveryEmail',
+                  form.errors.confirmDeliveryEmail
+                )}
+              </small>
             </InputGroup>
           </Row>
         </>
@@ -172,6 +191,9 @@ const Checkout = () => {
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
+                    <small>
+                      {getErrorMessage('cardOwner', form.errors.cardOwner)}
+                    </small>
                   </InputGroup>
                   <InputGroup>
                     <label htmlFor="cardOwner">CPF do títular do cartão</label>
@@ -183,6 +205,12 @@ const Checkout = () => {
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
+                    <small>
+                      {getErrorMessage(
+                        'cpfCardOwner',
+                        form.errors.cpfCardOwner
+                      )}
+                    </small>
                   </InputGroup>
                 </Row>
                 <Row marginTop="24px">
@@ -196,17 +224,26 @@ const Checkout = () => {
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
+                    <small>
+                      {getErrorMessage(
+                        'cardDisplayName',
+                        form.errors.cardDisplayName
+                      )}
+                    </small>
                   </InputGroup>
                   <InputGroup>
                     <label htmlFor="cardNumber">Número do cartão</label>
                     <input
                       type="text"
                       id="cardNumber"
-                      name="cardnumber"
-                      value={form.values.cardnumber}
+                      name="cardNumber"
+                      value={form.values.cardNumber}
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
+                    <small>
+                      {getErrorMessage('cardNumber', form.errors.cardNumber)}
+                    </small>
                   </InputGroup>
                   <InputGroup maxWidth="123px">
                     <label htmlFor="expiresMonth">Mês do vencimento</label>
@@ -218,6 +255,12 @@ const Checkout = () => {
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
+                    <small>
+                      {getErrorMessage(
+                        'expiresMonth',
+                        form.errors.expiresMonth
+                      )}
+                    </small>
                   </InputGroup>
                   <InputGroup maxWidth="123px">
                     <label htmlFor="expiresYear">Ano de vencimento</label>
@@ -229,6 +272,9 @@ const Checkout = () => {
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
+                    <small>
+                      {getErrorMessage('expiresYear', form.errors.expiresYear)}
+                    </small>
                   </InputGroup>
                   <InputGroup maxWidth="48px">
                     <label htmlFor="cardCode">CVV</label>
@@ -240,6 +286,9 @@ const Checkout = () => {
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
+                    <small>
+                      {getErrorMessage('cardCode', form.errors.cardCode)}
+                    </small>
                   </InputGroup>
                 </Row>
                 <Row marginTop="24px">
@@ -256,6 +305,12 @@ const Checkout = () => {
                       <option>2x de R$200,00</option>
                       <option>3x de R$200,00</option>
                     </select>
+                    <small>
+                      {getErrorMessage(
+                        'installments',
+                        form.errors.installments
+                      )}
+                    </small>
                   </InputGroup>
                 </Row>
               </>
