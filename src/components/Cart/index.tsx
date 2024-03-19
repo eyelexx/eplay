@@ -22,15 +22,14 @@ const Cart = () => {
   const closeCart = () => {
     dispatch(close())
   }
+  const removeItem = (id: number) => {
+    dispatch(remove(id))
+  }
 
   const getTotalPrice = () => {
     return items.reduce((acumulador, valorAtual) => {
       return (acumulador += valorAtual.prices.current!)
     }, 0)
-  }
-
-  const removeItem = (id: number) => {
-    dispatch(remove(id))
   }
 
   return (
