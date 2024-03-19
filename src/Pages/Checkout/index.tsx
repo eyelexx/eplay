@@ -7,6 +7,7 @@ import { Row, InputGroup, TabButton } from './styles'
 import boleto from '../../assets/images/barcode.png'
 import cartao from '../../assets/images/credit-card.png'
 import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 const Checkout = () => {
   const [payWithCard, setpayWithCard] = useState(false)
@@ -25,12 +26,56 @@ const Checkout = () => {
       expiresMonth: '',
       expiresYear: '',
       cardCode: '',
-      installments: 1
+      installments: ''
     },
+    validationSchema: Yup.object({
+      fullName: Yup.string()
+        .min(5, 'O nome precisa ter pelo menos 5 caracteres')
+        .required('O campo é obrigatório'),
+      email: Yup.string()
+        .email('E-mail inválido')
+        .required('O campo é obrigatório'),
+      cpf: Yup.string()
+        .min(14, 'O campo precisa ter 14 caracteres')
+        .max(14, 'O campo precisa ter 14 caracteres')
+        .required('O campo é obrigatório'),
+      deliveryEmail: Yup.string()
+        .email('E-mail inválido')
+        .required('O campo é obrigatório'),
+      confirmDeliveryEmail: Yup.string()
+        .email('E-mail inválido')
+        .required('O campo é obrigatório'),
+      cardOwner: Yup.string()
+        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
+        .required('O campo é obrigatório'),
+      cpfCardOwner: Yup.string()
+        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
+        .required('O campo é obrigatório'),
+      cardDisplayName: Yup.string()
+        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
+        .required('O campo é obrigatório'),
+      cardNumber: Yup.string()
+        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
+        .required('O campo é obrigatório'),
+      expiresMonth: Yup.string()
+        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
+        .required('O campo é obrigatório'),
+      expiresYear: Yup.string()
+        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
+        .required('O campo é obrigatório'),
+      cardCode: Yup.string()
+        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
+        .required('O campo é obrigatório'),
+      installments: Yup.string()
+        .min(5, 'O campo precisa ter pelo menos 5 caracteres')
+        .required('O campo é obrigatório')
+    }),
     onSubmit: (values) => {
       console.log(values)
     }
   })
+
+  console.log(form)
 
   return (
     <form onSubmit={form.handleSubmit} className="container">
@@ -45,6 +90,7 @@ const Checkout = () => {
                 name="fullName"
                 value={form.values.fullName}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
               />
             </InputGroup>
             <InputGroup>
@@ -54,6 +100,7 @@ const Checkout = () => {
                 name="email"
                 value={form.values.email}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
               />
             </InputGroup>
             <InputGroup>
@@ -64,6 +111,7 @@ const Checkout = () => {
                 name="cpf"
                 value={form.values.cpf}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
               />
             </InputGroup>
           </Row>
@@ -77,6 +125,7 @@ const Checkout = () => {
                 name="deliveryEmail"
                 value={form.values.deliveryEmail}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
               />
             </InputGroup>
             <InputGroup>
@@ -87,6 +136,7 @@ const Checkout = () => {
                 name="confirmDeliveryEmail"
                 value={form.values.confirmDeliveryEmail}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
               />
             </InputGroup>
           </Row>
@@ -120,6 +170,7 @@ const Checkout = () => {
                       name="cardOwner"
                       value={form.values.cardOwner}
                       onChange={form.handleChange}
+                      onBlur={form.handleBlur}
                     />
                   </InputGroup>
                   <InputGroup>
@@ -130,6 +181,7 @@ const Checkout = () => {
                       name="cpfCardOwner"
                       value={form.values.cpfCardOwner}
                       onChange={form.handleChange}
+                      onBlur={form.handleBlur}
                     />
                   </InputGroup>
                 </Row>
@@ -142,6 +194,7 @@ const Checkout = () => {
                       name="cardDisplayName"
                       value={form.values.cardDisplayName}
                       onChange={form.handleChange}
+                      onBlur={form.handleBlur}
                     />
                   </InputGroup>
                   <InputGroup>
@@ -152,6 +205,7 @@ const Checkout = () => {
                       name="cardnumber"
                       value={form.values.cardnumber}
                       onChange={form.handleChange}
+                      onBlur={form.handleBlur}
                     />
                   </InputGroup>
                   <InputGroup maxWidth="123px">
@@ -162,6 +216,7 @@ const Checkout = () => {
                       name="expiresMonth"
                       value={form.values.expiresMonth}
                       onChange={form.handleChange}
+                      onBlur={form.handleBlur}
                     />
                   </InputGroup>
                   <InputGroup maxWidth="123px">
@@ -172,6 +227,7 @@ const Checkout = () => {
                       name="expiresYear"
                       value={form.values.expiresYear}
                       onChange={form.handleChange}
+                      onBlur={form.handleBlur}
                     />
                   </InputGroup>
                   <InputGroup maxWidth="48px">
@@ -182,6 +238,7 @@ const Checkout = () => {
                       name="cardCode"
                       value={form.values.cardCode}
                       onChange={form.handleChange}
+                      onBlur={form.handleBlur}
                     />
                   </InputGroup>
                 </Row>
@@ -193,6 +250,7 @@ const Checkout = () => {
                       name="installments"
                       value={form.values.installments}
                       onChange={form.handleChange}
+                      onBlur={form.handleBlur}
                     >
                       <option>1x de R$200,00</option>
                       <option>2x de R$200,00</option>
