@@ -10,7 +10,7 @@ export const Container = styled.footer`
 `
 
 export const SectionTitle = styled.h4`
-  color: ${colors.black};
+  color: ${colors.white};
   font-size: 16px;
   font-weight: bold;
 `

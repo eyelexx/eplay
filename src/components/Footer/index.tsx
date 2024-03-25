@@ -4,7 +4,7 @@ const currentYear = new Date().getFullYear()
 
 const Footer = () => (
   <S.Container>
-    <div className="S.container">
+    <div className="container">
       <S.FooterSection>
         <S.SectionTitle>Categorias</S.SectionTitle>
         <S.Links>
