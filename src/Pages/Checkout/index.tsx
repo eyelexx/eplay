@@ -95,7 +95,7 @@ const Checkout = () => {
     }),
     onSubmit: (values) => {
       purchase({
-        biling: {
+        billing: {
           document: values.cpf,
           email: values.email,
           name: values.fullName

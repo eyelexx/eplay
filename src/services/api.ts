@@ -7,7 +7,7 @@ type Product = {
 
 type PurchasePayload = {
   products: Product[]
-  biling: {
+  billing: {
     name: string
     email: string
     document: string
@@ -18,7 +18,7 @@ type PurchasePayload = {
   payment: {
     card: {
       active: boolean
-      owner: {
+      owner?: {
         name: string
         document: string
       }
@@ -40,7 +40,7 @@ type PurchaseResponse = {
 
 const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://fake-api-tau.vercel.app/api/eplay'
+    baseUrl: 'https://fake-api-tau.vercel.app/api/eplay'
   }),
   endpoints: (builder) => ({
     getFeaturedGame: builder.query<Game, void>({
